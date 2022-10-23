@@ -16,7 +16,7 @@ Foi utilizado as distribuições Ubuntu para o desenvolvimento do programa.
 ### Como compilar o programa:
 
   Para compilar o programa "Proj02-04N11-CaioS_GuilhermeP_LeonardoM.c" devemos utilizar o compilador C GCC e o seguinte comando no terminal:
-gcc Proj02-04N11-CaioS_GuilhermeP_LeonardoM.c -o Proj01-04N11-CaioS_GuilhermeP_LeonardoM.bin
+gcc -g -Wall Proj02-04N11-CaioS_GuilhermeP_LeonardoM.c -o Proj01-04N11-CaioS_GuilhermeP_LeonardoM.bin -Ipthread
 
 ### Como executar o programa:
 
