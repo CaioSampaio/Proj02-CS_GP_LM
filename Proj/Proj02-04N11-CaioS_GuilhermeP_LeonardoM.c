@@ -22,8 +22,8 @@ int valor;
 int transferencia(void *arg){
 	
 	if (from.saldo >= valor){ // 2
-				  from.saldo -= valor;
-				  to.saldo += valor;
+		from.saldo -= valor;
+		to.saldo += valor;
 	}
 	
 	printf("Transferência concluída com sucesso!\n");
