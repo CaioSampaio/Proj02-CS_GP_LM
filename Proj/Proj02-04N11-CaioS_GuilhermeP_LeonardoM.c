@@ -7,13 +7,20 @@
 #include <sched.h>
 #include <stdio.h>
 
-// 64kB stack
-#define FIBER_STACK 1024*64
+#include <unistd.h>
+#include <stdint.h>
+#include <pthread.h>
+
+/* ----- STRUCTS ----- */
 
 struct c{
 	int saldo;
 };
 
+/* ----- VARIÁVEIS GLOBAIS ----- */
+
+#define FIBER_STACK 1024*64 // Pilha de 64KB
+#define numero_threads 10
 typedef struct c conta;
 conta from, to;
 int valor;
@@ -37,6 +44,7 @@ int main(){
 	void* stack;
 	pid_t pid;
 	int i;
+	pthread_t transferencias[numero_threads]; //Vetor de transferencias como Threads
 	
 	// Allocate the stack
 	stack = malloc( FIBER_STACK );
@@ -53,7 +61,7 @@ int main(){
 	printf( "Transferindo 10 para a conta c2\n" );
 	valor = 10;
 	
-	for (i = 0; i < 10; i++){
+	for (i = 0; i < numero_threads; i++){
 		// Call the clone system call to create the child thread
 		pid = clone( &transferencia, (char*) stack + FIBER_STACK, SIGCHLD | CLONE_FS | CLONE_FILES | CLONE_SIGHAND | CLONE_VM, 0 );
 		
