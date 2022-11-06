@@ -42,9 +42,9 @@ int transferencia(void *arg){
 
 int main(){
 	void* stack;
-	pid_t pid;
+	//pid_t pid;
 	int status;
-	pthread_t transferencias[numero_threads]; //Vetor de transferencias como Threads
+	pthread_t contas[numero_threads]; //Vetor de transferencias como Threads
 	
 	// Allocate the stack
 	stack = malloc( FIBER_STACK );
@@ -72,15 +72,27 @@ int main(){
 		//}
 
     //Cria cada conta executando o método transferencia e salva o status de criação
-    status = pthread_create(&transferencias[i], NULL, transferencia, (void*)(intptr_t)i);
+    status = pthread_create(&contas[i], NULL, transferencia, (void*)(intptr_t)i);
 
-    //Verifica se a criação foi bem-sucedida
+    //Verifica se a criação foi bem-sucedida 
     if(status != 0){
       printf("A conta %d não foi criada corretamente\n", i + 1);
     } else{
       printf("A conta %d foi criada\n", i + 1);
     }
 	}
+
+  //Espera cada thread (filósofo) terminar
+    for(int i = 0; i < numero_threads; i++){
+	
+	//Realiza o join de cada filósofo e salva o status da operação
+        status = pthread_join(contas[i], NULL);
+        
+        //Verifica se a operação foi bem-sucedida
+        if(status != 0){
+            printf("O filósofo morreu à mesa %d\n", status);
+        }
+    }
 
 	// Free the stack
 	free( stack );
