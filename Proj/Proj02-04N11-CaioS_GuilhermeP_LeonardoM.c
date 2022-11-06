@@ -20,7 +20,7 @@ struct c{
 /* ----- VARIÁVEIS GLOBAIS ----- */
 
 #define FIBER_STACK 1024*64 // Pilha de 64KB
-#define numero_threads 10
+#define numero_threads 2
 typedef struct c conta;
 conta from, to;
 int valor;
@@ -43,7 +43,7 @@ int transferencia(void *arg){
 int main(){
 	void* stack;
 	pid_t pid;
-	int i;
+	int status;
 	pthread_t transferencias[numero_threads]; //Vetor de transferencias como Threads
 	
 	// Allocate the stack
@@ -60,15 +60,26 @@ int main(){
 	
 	printf( "Transferindo 10 para a conta c2\n" );
 	valor = 10;
-	
-	for (i = 0; i < numero_threads; i++){
+
+  //Cria as contas como threads
+	for (int i = 0; i < numero_threads; i++){
 		// Call the clone system call to create the child thread
-		pid = clone( &transferencia, (char*) stack + FIBER_STACK, SIGCHLD | CLONE_FS | CLONE_FILES | CLONE_SIGHAND | CLONE_VM, 0 );
+		//pid = clone( &transferencia, (char*) stack + FIBER_STACK, SIGCHLD | CLONE_FS | CLONE_FILES | CLONE_SIGHAND | CLONE_VM, 0 );
 		
-		if (pid == -1){
-			perror( "clone" );
-			exit(2);
-		}
+		//if (pid == -1){
+			//perror( "clone" );
+			//exit(2);
+		//}
+
+    //Cria cada conta executando o método transferencia e salva o status de criação
+    status = pthread_create(&transferencias[i], NULL, transferencia, (void*)(intptr_t)i);
+
+    //Verifica se a criação foi bem-sucedida
+    if(status != 0){
+      printf("A conta %d não foi criada corretamente\n", i + 1);
+    } else{
+      printf("A conta %d foi criada\n", i + 1);
+    }
 	}
 
 	// Free the stack
