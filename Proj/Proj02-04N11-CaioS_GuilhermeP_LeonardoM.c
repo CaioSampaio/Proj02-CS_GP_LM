@@ -10,6 +10,7 @@
 #include <unistd.h>
 #include <stdint.h>
 #include <pthread.h>
+#include <time.h>
 
 /* ----- STRUCTS ----- */
 
@@ -20,17 +21,40 @@ struct c{
 /* ----- VARIÁVEIS GLOBAIS ----- */
 
 #define FIBER_STACK 1024*64 // Pilha de 64KB
-#define numero_threads 2
+#define numero_threads 100
 typedef struct c conta;
 conta from, to;
 int valor;
 
+/* ----- FUNÇÕES AUXILIARES ----- */
+
+// Gera um número aleatório de 1 à 20
+int gerarRandomico (){
+
+    return rand()%20;
+}
+
 // The child thread will execute this function
-int transferencia(void *arg){
+int *transferencia(void *arg){
+  int i = (intptr_t)arg; //ID de cada filósofo
+
+  //Timer Fixo de 5 segundos
+  sleep(3); //Filósofo irá comer por 5 segundos
+
+  printf("\n-- Transferência do nº %d -- \n", i + 1);
+
+  valor = gerarRandomico();
+  printf( "Transferindo %d para a conta c2\n", valor );
 	
 	if (from.saldo >= valor){ // 2
 		from.saldo -= valor;
 		to.saldo += valor;
+	}
+  valor = gerarRandomico();
+  printf( "Transferindo %d para a conta c1\n", valor );
+  if (to.saldo >= valor){ // 2
+		to.saldo -= valor;
+		from.saldo += valor;
 	}
 	
 	printf("Transferência concluída com sucesso!\n");
@@ -57,9 +81,6 @@ int main(){
 	// Todas as contas começam com saldo 100
 	from.saldo = 100;
 	to.saldo = 100;
-	
-	printf( "Transferindo 10 para a conta c2\n" );
-	valor = 10;
 
   //Cria as contas como threads
 	for (int i = 0; i < numero_threads; i++){
@@ -72,13 +93,14 @@ int main(){
 		//}
 
     //Cria cada conta executando o método transferencia e salva o status de criação
+    sleep(1);
     status = pthread_create(&contas[i], NULL, transferencia, (void*)(intptr_t)i);
 
     //Verifica se a criação foi bem-sucedida 
     if(status != 0){
-      printf("A conta %d não foi criada corretamente\n", i + 1);
+      printf("Erro na transferência %d\n", i + 1);
     } else{
-      printf("A conta %d foi criada\n", i + 1);
+      printf("A transferência %d foi iniciada\n", i + 1);
     }
 	}
 
