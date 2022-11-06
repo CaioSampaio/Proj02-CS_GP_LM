@@ -66,7 +66,7 @@ void *transferencia(void *arg){
   printf( "Transferindo %d para a conta c2\n", valor );
 	
 	if (from.saldo >= valor){ //2
-		from.saldo -= valor;
+    from.saldo -= valor;
 		to.saldo += valor;
 	}
   valor = gerarRandomico();
@@ -79,6 +79,8 @@ void *transferencia(void *arg){
 	printf("Transferência concluída com sucesso!\n");
 	printf("Saldo de c1: %d\n", from.saldo);
 	printf("Saldo de c2: %d\n", to.saldo);
+
+  return  0;
 }
 
 /* ----- MAIN ----- */
@@ -90,7 +92,7 @@ int main(){
 	pthread_t transferencias[numero_threads]; //Vetor de transferências como Threads
 	
 	//Aloca o stack
-	stack = malloc( FIBER_STACK );
+	stack = malloc(FIBER_STACK);
 	
 	if (stack == 0){
 		perror("Erro no malloc: não foi possível o stack");
@@ -103,7 +105,7 @@ int main(){
 
   //Cria as transferências como threads
 	for (int i = 0; i < numero_threads; i++){
-
+    
     //Timer Fixo de 1 segundos
     //sleep(1);
 
@@ -118,10 +120,10 @@ int main(){
     }
 	}
 
-  //Espera cada thread (transferência) terminar
+    //Espera cada thread (transferência) terminar
     for(int i = 0; i < numero_threads; i++){
 	
-	  //Realiza o join de cada transferência e salva o status da operação
+	    //Realiza o join de cada transferência e salva o status da operação
       status = pthread_join(transferencias[i], NULL);
         
       //Verifica se a operação foi bem-sucedida
