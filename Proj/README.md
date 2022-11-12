@@ -37,6 +37,7 @@ Saldo de c1: $99
 
 Saldo de c2: $1
 
+
 -- Transferência do nº 99 -- 
 
 Transferindo 1
@@ -46,6 +47,7 @@ Transferência 99 concluída com sucesso!
 Saldo de c1: $100
 
 Saldo de c2: $0
+
 
 -- Transferência do nº 100 -- 
 
