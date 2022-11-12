@@ -30,21 +30,29 @@ gcc -g -Wall Proj02-04N11-CaioS_GuilhermeP_LeonardoM.c -o Proj02-04N11-CaioS_Gui
   -- Transferência do nº 98 -- 
 
 Transferindo 1
+
 Transferência 98 concluída com sucesso!
+
 Saldo de c1: $99
+
 Saldo de c2: $1
 
 -- Transferência do nº 99 -- 
 
 Transferindo 1
+
 Transferência 99 concluída com sucesso!
+
 Saldo de c1: $100
+
 Saldo de c2: $0
 
 -- Transferência do nº 100 -- 
 
 Transferindo 70
+
 Transferência 100 concluída com sucesso!
+
 Saldo de c1: $30
 
 ### Funcionamento do programa:
